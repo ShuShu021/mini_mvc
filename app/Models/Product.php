@@ -14,6 +14,7 @@ class Product
     private $prix;
     private $stock;
     private $image_url;
+    private $categorie_id;
 
     // =====================
     // Getters / Setters
@@ -79,6 +80,16 @@ class Product
         $this->image_url = $image_url;
     }
 
+    public function getCategorieId()
+    {
+        return $this->categorie_id;
+    }
+
+    public function setCategorieId($categorie_id)
+    {
+        $this->categorie_id = $categorie_id;
+    }
+
     // =====================
     // Méthodes CRUD
     // =====================
@@ -87,10 +98,14 @@ class Product
      * Récupère tous les produits
      * @return array
      */
-    public static function getAll()
+    public static function getAll(int $limit = 0)
     {
         $pdo = Database::getPDO();
-        $stmt = $pdo->query("SELECT * FROM produit ORDER BY id DESC");
+        $sql = "SELECT * FROM produit ORDER BY id DESC";
+        if ($limit > 0) {
+            $sql .= " LIMIT " . (int)$limit;
+        }
+        $stmt = $pdo->query($sql);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -108,19 +123,42 @@ class Product
     }
 
     /**
+     * Récupère plusieurs produits par leurs IDs.
+     * @param int[] $ids
+     * @return array<int, array<string,mixed>>
+     */
+    public static function findManyByIds(array $ids): array
+    {
+        if (empty($ids)) {
+            return [];
+        }
+        $placeholders = implode(',', array_fill(0, count($ids), '?'));
+        $pdo = Database::getPDO();
+        $stmt = $pdo->prepare("SELECT * FROM produit WHERE id IN ($placeholders)");
+        $stmt->execute($ids);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $indexed = [];
+        foreach ($results as $row) {
+            $indexed[(int)$row['id']] = $row;
+        }
+        return $indexed;
+    }
+
+    /**
      * Crée un nouveau produit
      * @return bool
      */
     public function save()
     {
         $pdo = Database::getPDO();
-        $stmt = $pdo->prepare("INSERT INTO produit (nom, description, prix, stock, image_url) VALUES (?, ?, ?, ?, ?)");
+        $stmt = $pdo->prepare("INSERT INTO produit (nom, description, prix, stock, image_url, categorie_id) VALUES (?, ?, ?, ?, ?, ?)");
         return $stmt->execute([
             $this->nom,
             $this->description,
             $this->prix,
             $this->stock,
-            $this->image_url
+            $this->image_url,
+            $this->categorie_id
         ]);
     }
 
@@ -131,13 +169,14 @@ class Product
     public function update()
     {
         $pdo = Database::getPDO();
-        $stmt = $pdo->prepare("UPDATE produit SET nom = ?, description = ?, prix = ?, stock = ?, image_url = ? WHERE id = ?");
+        $stmt = $pdo->prepare("UPDATE produit SET nom = ?, description = ?, prix = ?, stock = ?, image_url = ?, categorie_id = ? WHERE id = ?");
         return $stmt->execute([
             $this->nom,
             $this->description,
             $this->prix,
             $this->stock,
             $this->image_url,
+            $this->categorie_id,
             $this->id
         ]);
     }
@@ -151,6 +190,22 @@ class Product
         $pdo = Database::getPDO();
         $stmt = $pdo->prepare("DELETE FROM produit WHERE id = ?");
         return $stmt->execute([$this->id]);
+    }
+
+    /**
+     * Décrémente le stock si suffisant.
+     */
+    public static function decrementStock(int $productId, int $quantity): bool
+    {
+        $pdo = Database::getPDO();
+        $check = $pdo->prepare('SELECT stock FROM produit WHERE id = ?');
+        $check->execute([$productId]);
+        $stock = $check->fetchColumn();
+        if ($stock === false || (int)$stock < $quantity) {
+            return false;
+        }
+        $stmt = $pdo->prepare('UPDATE produit SET stock = stock - ? WHERE id = ?');
+        return $stmt->execute([$quantity, $productId]);
     }
 }
 

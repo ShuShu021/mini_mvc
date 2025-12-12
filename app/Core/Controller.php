@@ -27,6 +27,35 @@ class Controller
         // Inclut le layout qui utilise la variable $content
         require $layoutFile;
     }
+
+    /**
+     * Retourne l'utilisateur connecté (données stockées en session) ou null.
+     */
+    protected function currentUser(): ?array
+    {
+        return $_SESSION['user'] ?? null;
+    }
+
+    /**
+     * Redirige vers une URL et termine le script.
+     */
+    protected function redirect(string $path): void
+    {
+        header('Location: ' . $path);
+        exit;
+    }
+
+    /**
+     * Exige un utilisateur connecté, sinon redirige vers /login.
+     */
+    protected function requireAuth(): array
+    {
+        $user = $this->currentUser();
+        if (!$user) {
+            $this->redirect('/login');
+        }
+        return $user;
+    }
 }
 
 

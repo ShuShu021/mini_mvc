@@ -19,7 +19,8 @@ final class ProductController extends Controller
         // Affiche la liste des produits
         $this->render('product/list-products', params: [
             'title' => 'Liste des produits',
-            'products' => $products
+            'products' => $products,
+            'user' => $this->currentUser(),
         ]);
     }
 
@@ -110,6 +111,22 @@ final class ProductController extends Controller
                 'old_values' => $input
             ]);
         }
+    }
+
+    public function show(string $id): void
+    {
+        $product = Product::findById((int)$id);
+        if (!$product) {
+            http_response_code(404);
+            echo 'Produit introuvable';
+            return;
+        }
+
+        $this->render('product/show', [
+            'title' => $product['nom'] ?? 'Produit',
+            'product' => $product,
+            'user' => $this->currentUser(),
+        ]);
     }
 }
 

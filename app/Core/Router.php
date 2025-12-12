@@ -3,7 +3,7 @@
 declare(strict_types=1);
 // Espace de noms du noyau
 namespace Mini\Core;
-// Déclare le routeur HTTP minimaliste
+// Déclare le routeur HTTP minimaliste avec paramètres dynamiques {id}
 final class Router
 {
     // Tableau des routes : [méthode, chemin, [ClasseContrôleur, action]]
@@ -28,14 +28,23 @@ final class Router
 
         // Parcourt chaque route enregistrée
         foreach ($this->routes as [$routeMethod, $routePath, $handler]) {
-            // Vérifie correspondance stricte de méthode et de chemin
-            if ($method === $routeMethod && $path === $routePath) {
+            if ($method !== $routeMethod) {
+                continue;
+            }
+
+            // Transforme les chemins avec paramètres {id} en regex
+            $pattern = preg_replace('#\{[^/]+\}#', '([^/]+)', $routePath);
+            $pattern = '#^' . $pattern . '$#';
+
+            if (preg_match($pattern, $path, $matches)) {
                 // Déstructure le gestionnaire en [classe, action]
                 [$class, $action] = $handler;
                 // Instancie le contrôleur cible
                 $controller = new $class();
-                // Appelle l'action sur le contrôleur
-                $controller->$action();
+                // Retire le match complet pour ne garder que les paramètres
+                array_shift($matches);
+                // Appelle l'action sur le contrôleur avec les paramètres dynamiques
+                $controller->$action(...$matches);
                 return;
             }
         }
@@ -45,5 +54,3 @@ final class Router
         echo '404 Not Found';
     }
 }
-
-

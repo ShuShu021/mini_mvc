@@ -1,47 +1,40 @@
 <!-- Formulaire pour créer un nouvel utilisateur -->
-<div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+<div class="container" style="max-width: 600px;">
     <h2>Ajouter un nouvel utilisateur</h2>
     
     <!-- Message de succès ou d'erreur -->
-    <div id="message" style="display: none; padding: 10px; margin-bottom: 20px; border-radius: 4px;"></div>
+    <div id="message" class="message" style="display: none;"></div>
     
-    <form id="userForm" style="display: flex; flex-direction: column; gap: 15px;">
-        <div>
-            <label for="nom" style="display: block; margin-bottom: 5px; font-weight: bold;">Nom :</label>
+    <form id="userForm">
+        <div class="form-group">
+            <label for="nom">Nom :</label>
             <input 
                 type="text" 
                 id="nom" 
                 name="nom" 
                 required 
-                style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;"
                 placeholder="Entrez le nom de l'utilisateur"
             >
         </div>
         
-        <div>
-            <label for="email" style="display: block; margin-bottom: 5px; font-weight: bold;">Email :</label>
+        <div class="form-group">
+            <label for="email">Email :</label>
             <input 
                 type="email" 
                 id="email" 
                 name="email" 
                 required 
-                style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;"
                 placeholder="exemple@email.com"
             >
         </div>
         
-        <button 
-            type="submit" 
-            style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;"
-            onmouseover="this.style.backgroundColor='#0056b3'" 
-            onmouseout="this.style.backgroundColor='#007bff'"
-        >
+        <button type="submit" class="btn btn-primary">
             Créer l'utilisateur
         </button>
     </form>
     
-    <div style="margin-top: 20px;">
-        <a href="/" style="color: #007bff; text-decoration: none;">← Retour à l'accueil</a>
+    <div class="mt-20">
+        <a href="/">← Retour à l'accueil</a>
     </div>
 </div>
 
