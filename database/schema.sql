@@ -65,9 +65,19 @@ INSERT INTO categorie (nom) VALUES ('Catégorie A'), ('Catégorie B');
 -- Catalogue démo vêtements
 INSERT INTO produit (nom, description, prix, stock, image_url, categorie_id) VALUES
 ('T-shirt coton blanc', 'T-shirt unisexe 100% coton, coupe régulière.', 14.90, 50, 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800', 1),
-('Jean slim bleu', 'Jean stretch coupe slim, délavage moyen.', 49.90, 30, 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=800', 1),
-('Sweat à capuche gris', 'Sweat molleton doux, capuche ajustable, poche kangourou.', 39.90, 25, 'https://images.unsplash.com/photo-1521572267360-1c1f5ef2a1ef?w=800', 1),
-('Chemise oxford bleu ciel', 'Chemise oxford coupe droite, col boutonné.', 34.90, 20, 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&blend=000&sat=-70', 2),
-('Veste bomber noire', 'Bomber zippé doublé, finition côtelée.', 59.90, 15, 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&blend=111&sat=-60', 2),
-('ao dài, Tenu traditionnel vietnamienne', 'Il s''agit d''une tenue traditionnelle vietnamienne composée d''une tunique ajustée et d''un pantalon, souvent portée lors de cérémonies ou d''événements importants.', 44.90, 18, 'https://unsplash.com/fr/photos/une-femme-tient-des-lys-vetue-dun-costume-traditionnel-vietnamien-c3neqBXzyCw', 2);
+('ao dài, Tenu traditionnel vietnamienne', 'Il s''agit d''une tenue traditionnelle vietnamienne composée d''une tunique ajustée et d''un pantalon, souvent portée lors de cérémonies ou d''événements importants.', 24.90, 20, 'https://images.unsplash.com/photo-1745750003557-b666d0ea0104?q=80&w=668&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 2), 
+
+('Polo Ralph Lauren', 'Polo Ralph Lauren – Classique et Élégance 
+ 
+Couleur : Multiple choix de couleurs classiques (blanc, bleu marine, rouge, etc.) 
+ 
+Logo : Poney Ralph Lauren brodé sur la poitrine 
+ 
+Composition : 100% coton piqué 
+ 
+Coupe : Ajustée, pour un look moderne 
+ 
+Entretien : Lavable en machine, facile à entretenir 
+ 
+Ce polo polyvalent est parfait pour des occasions décontractées, tout en restant chic. Associez-le à un jean ou un chino pour une allure élégante et intemporelle. ', 155.00, 42, ' http://static.galerieslafayette.com/media/733/73390211/G_73390211_233_ZP_1.jpg ',2); 
 
